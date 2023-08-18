@@ -1,5 +1,3 @@
-#server side code 
-
 import socket 
 import threading
 import sys
@@ -7,6 +5,7 @@ import sys
 #getting ip ad port and header
 HEADER = 64
 FORMAT = 'utf-8'
+
 PORT = 5050
 SERVER = socket.gethostbyname(socket.gethostname()) #gets the ip address of the server
 
@@ -24,12 +23,13 @@ def handle_client(con, addr):
     connected = True
     while connected:
         msg_lenght = con.recv(HEADER).decode(FORMAT) #getting the msg lenght
-        msg_lenght = int(msg_lenght)
-        msg = con.recv(msg_lenght).decode(FORMAT) #getting the msg
-        if msg == "quit":
-            connected = False
-        print(f"[{addr}] {msg}")
-        # con.send("Msg received".encode()) #sending a msg to the client
+        if msg_lenght: 
+            msg_lenght = int(msg_lenght)
+            msg = con.recv(msg_lenght).decode(FORMAT) #getting the msg
+            if msg == "quit":
+                connected = False
+            print(f"[{addr}] {msg}")
+            con.send("Message received".encode(FORMAT)) #sending a msg to the client
     con.close()
 
 
